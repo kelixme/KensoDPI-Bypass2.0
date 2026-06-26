@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KensoDPI - Zapret.Bypass {{ version }}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap');
+        * {
+            font-family: "Unbounded", sans-serif !important;
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+        }
+        body {
+            color: #e5e5e5;
+            /* font-family: -apple-system, 'Inter', 'Segoe UI', system-ui, sans-serif; */
+            /* min-height: 100vh; */
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            background: linear-gradient(180deg, #9a2727, #56009c);
+            max-height: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+        html{
+            background: #0a0a0a;
+            max-height: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+        .container {
+            background: #000000c0;
+            /* border-radius: 5px; */
+            padding: 10px;
+            /* max-width: 820px; */
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #000000;
+            box-shadow: 0 0px 20px 0px rgba(0, 0, 0, 0.86);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-bottom: 10px;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo {
+            font-size: 20px;
+            line-height: 0;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffe19b, #ffc669, #ff6a6a);
+            text-shadow: 0 0 30px #ffd26a;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+        .logo span {
+            font-weight: 400;
+            font-size: 16px;
+            -webkit-text-fill-color: #6b7280;
+            background: none;
+        }
+        .version-badge {
+            background: #311c3e;
+            color: #ffccfe;
+            line-height: 0;
+            display: flex;
+            align-items: center;
+            padding: 0px 10px;
+            height: 20px;
+            /* border-radius: 5px; */
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid #8442a0;
+            text-shadow: 0 0 5px #8442a0;
+        }
+        .admin-badge {
+            height: 20px;
+            align-items: center;
+            text-transform: uppercase;
+            padding: 0px 10px;
+            display: flex;
+            /* border-radius: 5px; */
+            font-size: 10px;
+            font-weight: 400;
+        }
+        .admin-badge.full {
+            background: #0a2a1a;
+            color: #4ade80;
+            border: 1px solid #1b6c36;
+            text-shadow: 0 0 5px #00ff04;
+        }
+        .admin-badge.limited {
+            background: #2a0a0a;
+            color: #f87171;
+            border: 1px solid #661111;
+            text-shadow: 0 0 5px #ff0000;
+        }
+        .tabs {
+            display: flex;
+            gap: 3px;
+            background: #000000;
+            /* border-radius: 5px; */
+            padding: 4px;
+            margin-bottom: 3px;
+            /* border: 1px solid #222; */
+        }
+        .tab {
+            flex: 1;
+            padding: 4px 0px;
+            color: #999999;
+            /* border-radius: 5px; */
+            cursor: pointer;
+            font-size: 12px;
+            /* font-weight: 300; */
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            text-align: center;
+            /* background: #111111; */
+            background: #0b0b0b;
+            border: 1px solid #ffffff05;
+        }
+        .tab:hover {
+            color: #d1d5db; 
+            background: #1F1F1F; 
+            border: 1px solid #333;
+        }
+        .tab.active {
+            background: #1a0000;
+            border: 1px solid #730000;
+            color: #ff5656;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            text-shadow: 0 0 30px #ff0000;
+            overflow: hidden;
+        }
+        .tab .tab-icon { margin-right: 8px; font-size: 16px; }
+        .tab-content { 
+            display: none; 
+            /* animation: fadeIn 0.25s ease;  */
+            background: #000000;
+            /* border: 1px solid #222; */
+            /* border-radius: 5px; */
+            padding: 5px;
+        }
+        .tab-content.active { 
+            display: block; 
+            min-height: 350px !important;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            padding: 8px 10px;
+            background: #130918;
+            border: 1px solid #7866ff;
+            /* border-radius: 5px; */
+            /* margin-bottom: 16px; */
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            /* border-radius: 5px; */
+            display: inline-block;
+        }
+        .status-dot.green { 
+            background: #4ade80; 
+            box-shadow: 0 0 8px rgba(74,222,128,0.3);}
+        .status-dot.yellow { 
+            background: #facc15;
+            box-shadow: 0 0 8px rgba(250,204,21,0.3);
+        }
+        .status-dot.red {
+            background: #f87171;
+            box-shadow: 0 0 8px rgba(248,113,113,0.3);
+        }
+        .status-dot.gray {
+            background: #4b5563;
+        }
+        .status-label {
+            line-height: 0;
+            font-size: 12px; 
+            color: #ffdbb2;
+            text-shadow: 0 0 5px #ffdbb2;
+        }
+        .status-value { 
+            line-height: 0;
+            font-size: 12px; 
+            /* font-weight: 500;  */
+            color: #e5e5e5; 
+            color: #fa8bb5;
+            text-shadow: 0 0 5px #fa8bb5;
+        }
+        .menu-grid {
+            display: grid;
+            /* grid-template-columns: 1fr 1fr; */
+            gap: 3px;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            height: 25px;
+            /* padding: 2px 2px; */
+            background: #0b0b0b;
+            border: 1px solid #ffffff05;
+            /* border-radius: 5px; */
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-size: 12px;
+            color: #67acff;
+            text-shadow: 0 0 5px #67acff50;
+            user-select: none;
+            overflow: hidden;
+        }
+        .menu-item:hover {
+            background: #1f1f1f;
+            border-color: #333;
+            /* transform: scale(1.01);  */
+        }
+        .menu-item .key {
+            text-shadow: 0 0 10px #ff0000;
+            font-weight: 300;
+            color: #ff3d3d;
+            background: #9000004c;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            height: 100%;
+            display: flex;
+            width: 40px;
+            /* border-radius: 3px; */
+            /* min-width: 22px; */
+        }
+        .menu-item .label { flex: 1; }
+        .menu-item .badge {
+            width: 150px;
+            font-size: 10px;
+            height: 100%;
+            padding-left: 6px;
+            display: flex;
+            align-items: center;
+            /* padding: 2px 10px; */
+            /* border-radius: 5px; */
+            background: #47002c;
+            background: #ffffff0b; 
+            color: #ff90da;
+            text-shadow: 0 0 5px #ff90da70;
+        }
+        .badge.green {
+            background: #0a2a1a; 
+            background: #ffffff0b; 
+            color: #4ade80; 
+            text-shadow: 0 0 5px #4ade8070;
+        }
+        .badge.red { 
+            background: #2a0a0a; 
+            background: #ffffff0b; 
+            color: #f87171; 
+            text-shadow: 0 0 5px #f8717170;
+        }
+        .badge.yellow { 
+            background: #2a2a0a; 
+            background: #ffffff0b; 
+            color: #facc15; 
+            text-shadow: 0 0 5px #facc1570;
+        }
+        .badge.blue { 
+            background: #0a1a2a; 
+            background: #ffffff0b; 
+            color: #60a5fa; 
+            text-shadow: 0 0 5px #60a5fa70;
+        }
+        .badge.purple { 
+            background: #1a0a2a; 
+            background: #ffffff0b; 
+            color: #a78bfa; 
+            text-shadow: 0 0 5px #a78bfa70;
+        }
+        .section-title {
+            font-size: 10px;
+            /* font-weight: 600; */
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #4b5563;
+            margin: 10px 0 4px 0;
+        }
+        .footer {
+            padding-top: 5px;
+            border-top: 1px solid #1a1a1a;
+            text-align: center;
+            /* font-size: 12px; */
+            color: #374151;
+        }
+        .footer a { color: #4b5563; text-decoration: none; transition: color 0.2s; }
+        .footer a:hover { color: #6b7280; }
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: rgba(46, 46, 46, 0.43);
+            border: 1px solid #2a2a2a;
+            /* border-radius: 5px; */
+            padding: 10px;
+            /* max-width: 520px; */
+            width: 100%;
+            /* max-height: 80vh; */
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+        }
+        .modal::-webkit-scrollbar { width: 4px; }
+        .modal::-webkit-scrollbar-track { background: #0a0a0a; border-radius: 2px; }
+        .modal::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+        .modal-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f0f0f0;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            color: #4b5563;
+            font-size: 22px;
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 0 4px;
+        }
+        .modal-close:hover { color: #f87171; }
+        .modal .message {
+            padding: 12px 16px;
+            border-radius: 5px;
+            margin: 8px 0;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .modal .message.success { background: #0a1a0a; border-left: 3px solid #4ade80; color: #86efac; }
+        .modal .message.error { background: #1a0a0a; border-left: 3px solid #f87171; color: #fca5a5; }
+        /* .modal .message.info { background: #0a0a1a; border-left: 3px solid #60a5fa; color: #93c5fd; } */
+        .modal .btn-group {
+            display: flex;
+            gap: 3px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .modal .btn {
+            border: 0px solid #fff;
+            padding: 8px 0px;
+            /* border: 1px solid #2a2a2a;. */
+            /* border-radius: 5px; */
+            background: #000000;
+            color: #d1d5db;
+            cursor: pointer;
+            font-size: 10px;
+            font-family: inherit;
+            transition: all 0.2s;
+            flex: 1;
+            min-width: 70px;
+            text-align: center;
+        }
+        .modal .btn:hover { background: #2a2a2a; border-color: #3a3a3a; }
+        .modal .btn.primary { background: #1a2a4a; border-color: #2a4a6a; color: #93c5fd; }
+        .modal .btn.primary:hover { background: #2a3a5a; }
+        .modal .btn.danger { background: #2a0a0a; border-color: #4a1a1a; color: #fca5a5; }
+        .modal .btn.danger:hover { background: #3a1a1a; }
+        .modal .btn.success { background: #0a2a1a; border-color: #1a4a2a; color: #86efac; }
+        .modal .btn.success:hover { background: #1a3a2a; }
+        .modal .preset-list {
+            max-height: 318px;
+            background: #121212;
+            gap: 2px;
+            flex-direction: column;
+            border: #000000 1px solid;
+            padding: 5px;
+            display: flex;
+            overflow-y: auto;
+            /* margin: 8px 0; */
+        }
+        .modal .preset-list::-webkit-scrollbar { width: 5px; }
+        .modal .preset-list::-webkit-scrollbar-track { background: #000000;  }
+        .modal .preset-list::-webkit-scrollbar-thumb { background: #464646; border-left: 1px #000000 solid; }
+        .modal .list-item {
+            display: flex;
+            align-items: center;
+            padding: 0px 10px;
+            min-height: 22px;
+            padding-left: 5px;
+            background: #000000;
+            line-height: 0;
+            /* border-radius: 5px; */
+            cursor: pointer;
+            font-size: 10px;
+            /* border: 1px solid transparent; */
+        }
+        .modal .list-item:hover { background: #1a1a1a; border-color: #2a2a2a; }
+        .modal .list-item .checkbox.num {
+            background: #ffffff10;
+            margin-right: 7px; 
+            width: 25px;
+            height: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffb759; 
+            font-size: 10px;
+
+
+        } 
+        .modal .list-item .checkbox { 
+            margin-right: 7px; 
+            width: 12px;
+            height: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff; 
+            background: #ffffff10;
+            font-size: 14px;
+        }
+        .modal .list-item .checkbox.checked { 
+            color: #000000; 
+            background: #4ade80;
+        }
+        .modal .list-item .name { flex: 1; color: #6e6e6e;  font-size: 12px;}
+        .modal .list-item .ext { color: #4b5563; font-size: 11px; }
+        .modal .preset-count { color: #6b7280; font-size: 12px; margin-bottom: 8px; }
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 5px 10px;
+            /* border-radius: 5px; */
+            font-size: 10px;
+            font-weight: 400 !important;
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            /* max-width: 420px; */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .toast.success {
+            background: #0a2a1a; 
+            border: 1px solid #1a4a2a;
+            color: #86efac; 
+        }
+        .toast.error {
+            background: #2a0a0a;
+            border: 1px solid #4a1a1a; 
+            color: #fca5a5; 
+        }
+        .toast.info {
+            background: #0a1a2a; 
+            border: 1px solid #1a3a4a; 
+            color: #93c5fd; }
+        @media (max-width: 640px) {
+            .container { padding: 16px; }
+            .menu-grid { grid-template-columns: 1fr; }
+            /* .header { flex-direction: column; align-items: flex-start; } */
+            .tabs { flex-wrap: wrap; }
+            .tab { flex: 1 1 auto; padding: 8px 12px; font-size: 12px; }
+            .modal { padding: 20px; margin: 10px; }
+        }
+        .help-text {
+            font-size: 12px;
+            color: #4b5563;
+            margin-top: 4px;
+        }
+        .inline-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+        }
+        .adg-port-input {
+            display: flex;
+            gap: 8px;
+            margin: 8px 0;
+        }
+        .adg-port-input input {
+            background: #0e0e0e;
+            border: 1px solid #2a2a2a;
+            /* border-radius: 5px; */
+            padding: 8px 14px;
+            color: #e5e5e5;
+            font-size: 14px;
+            font-family: inherit;
+            width: 100px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .adg-port-input input:focus { border-color: #4b5563; }
+        .adg-port-input input::placeholder { color: #374151; }
+        .help-text a {color: #60a5fa; text-decoration: none;}
+        .help-text a:hover {text-decoration: underline;}
+
+        #editor-custom, #editor-exclude{
+            position: relative !important;
+            overflow: hidden;
+        }
+        #editor-custom::after, #editor-exclude::after{
+            content: "Каждая строка — один домен или IP. Строки с # игнорируются.";
+            /* display:block; */
+            font-size: 10px;
+            padding: 3px 5px;
+            position: relative;
+            bottom: 0px;
+            /* right: 40px; */
+            /* left: 0px; */
+            z-index: 1000;
+            color: #545454;
+            border: 1px solid #000000;
+            border-top: 0px;
+            background: #0b0b0b
+            /* top: 0px; */
+        }
+        #customEditor, #excludeEditor{
+            padding: 5px !important;
+            height: 261px !important;
+        }
+
+
+/* Каждая строка — один домен или IP. Строки с # игнорируются. */
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <div class="logo">KensoDPI Tools</div>
+                <span class="version-badge">{{ version }}</span>
+            </div>
+            <div>
+                <span class="admin-badge {% if is_admin %}full{% else %}limited{% endif %}">
+                    {% if is_admin %}Полный доступ{% else %}Ограниченный{% endif %}
+                </span>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs" id="tabs">
+            <button class="tab active" data-tab="zapret">
+                Zapret
+            </button>
+            <button class="tab" data-tab="adghome">
+                AdGuard Home
+            </button>
+            <button class="tab" data-tab="tgwsproxy">
+                Tg Ws Proxy
+            </button>
+        </div>
+
+        <!-- ==================== TAB: ZAPRET ==================== -->
+        <div class="tab-content active" id="tab-zapret">
+            <div class="status-row">
+                <span class="status-dot 
+                    {% if service_running %}green
+                    {% elif service_installed %}yellow
+                    {% else %}gray{% endif %}">
+                </span>
+                <span class="status-value">
+                    {% if service_running %}Запущен
+                    {% elif service_installed %}Остановлен
+                    {% else %}Не установлен{% endif %}
+                </span>
+                <span class="status-label" style="margin-left:auto;">Пресет:</span>
+                <span class="status-value" style="color:#a78bfa; text-shadow: 0 0 5px #8c00ff;">{{ current_strategy }}</span>
+            </div>
+
+            <div class="section-title">========== Панель управления ==========</div>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="showInstallModal()">
+                    <span class="key">1</span>
+                    <span class="label" style="color: #46c846; text-shadow: 0 0 5px #46c84670;">Установить службу</span>
+                </div>
+                <div class="menu-item" onclick="removeService()">
+                    <span class="key">2</span>
+                    <span class="label" style="color: #ff5e5e; text-shadow: 0 0 5px #ff5e5e70;">Удалить службу</span>
+                </div>
+                <div class="menu-item" onclick="showPresetEditor()">
+                    <span class="key">3</span>
+                    <span class="label">Редактор списков</span>
+                    <span class="badge">Настроить</span>
+                </div>
+                <div class="menu-item" onclick="checkStatus()">
+                    <span class="key">4</span>
+                    <span class="label">Проверить статус</span>
+                </div>
+                <div class="menu-item" onclick="toggleGameFilter()">
+                    <span class="key">5</span>
+                    <span class="label">Игровой фильтр</span>
+                    <span class="badge {% if game_filter_status != 'Отключен' %}green{% else %}red{% endif %}">
+                        {{ game_filter_status }}
+                    </span>
+                </div>
+                <div class="menu-item" onclick="toggleIPSet()">
+                    <span class="key">6</span>
+                    <span class="label">IPSet фильтр</span>
+                    <span class="badge 
+                        {% if ipset_status == 'Loaded' %}green
+                        {% elif ipset_status == 'None' %}yellow
+                        {% else %}blue{% endif %}">
+                        {{ ipset_status }}
+                    </span>
+                </div>
+                <div class="menu-item" onclick="updateIPSet()">
+                    <span class="key">7</span>
+                    <span class="label">Обновить IPSet</span>
+                </div>
+                <div class="menu-item" onclick="updateHosts()">
+                    <span class="key">8</span>
+                    <span class="label">Обновить hosts</span>
+                </div>
+                <div class="menu-item" onclick="runDiagnostics()">
+                    <span class="key">9</span>
+                    <span class="label">Диагностика</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB: ADGUARDHOME ==================== -->
+        <div class="tab-content" id="tab-adghome">
+            <div class="status-row">
+                <span class="status-dot 
+                    {% if adg.running %}green
+                    {% elif adg.installed %}yellow
+                    {% else %}gray{% endif %}">
+                </span>
+                <span class="status-value">
+                    {% if adg.running %}Запущен
+                    {% elif adg.installed %}Установлен
+                    {% else %}Не установлен{% endif %}
+                </span>
+                <span class="status-label" style="margin-left:auto;">Порт:</span>
+                <span class="status-value" style="color: #a78bfa; text-shadow: 0 0 5px #8c00ff;">{{ adg.port }}</span>
+            </div>
+
+            <div class="section-title">========== Панель управления ==========</div>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="adgInstall()">
+                    <span class="key">1</span>
+                    <span class="label" style="color: #46c846; text-shadow: 0 0 5px #46c84670;">Установить службу</span>
+                </div>
+                <div class="menu-item" onclick="adgUninstall()">
+                    <span class="key">2</span>
+                    <span class="label" style="color: #ff5e5e; text-shadow: 0 0 5px #ff5e5e70;">Удалить службу</span>
+                </div>
+                <div class="menu-item" onclick="adgChangePort()">
+                    <span class="key">3</span>
+                    <span class="label">Изменить порт</span>
+                    <span class="badge blue">{{ adg.port }}</span>
+                </div>
+                <div class="menu-item" onclick="adgDnsMenu()">
+                    <span class="key">4</span>
+                    <span class="label">Настроить DNS</span>
+                    <span class="badge">Настроить</span>
+                </div>
+            </div>
+
+            <div class="help-text" style="margin-top:12px;">
+                Веб-интерфейс: <a href="http://localhost:{{ adg.port }}" target="_blank">http://localhost:{{ adg.port }}</a>
+                <br>
+                <br>
+                - Логин: admin
+                <br>
+                - Пароль: admin
+            </div>
+        </div>
+
+        <!-- ==================== TAB: TGWSPROXY ==================== -->
+        <div class="tab-content" id="tab-tgwsproxy">
+            <div class="status-row">
+                <span class="status-dot 
+                    {% if tgws.running %}green
+                    {% elif tgws.autostart %}yellow
+                    {% else %}gray{% endif %}">
+                </span>
+                <span class="status-value">
+                    {% if tgws.running %}Запущен
+                    {% elif tgws.autostart %}Остановлен (автозапуск)
+                    {% else %}Не установлен{% endif %}
+                </span>
+                <span class="status-label" style="margin-left:auto;">Автозапуск:</span>
+                <span class="status-value" style="color: #a78bfa; text-shadow: 0 0 5px #8c00ff;">
+                    {% if tgws.autostart %}ВКЛ{% else %}ВЫКЛ{% endif %}
+                </span>
+            </div>
+
+            <div class="section-title">========== Панель управления ==========</div>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="tgwsInstall()">
+                    <span class="key">1</span>
+                    <span class="label" style="color: #46c846; text-shadow: 0 0 5px #46c84670;">Установить службу</span>
+                </div>
+                <div class="menu-item" onclick="tgwsUninstall()">
+                    <span class="key">2</span>
+                    <span class="label" style="color: #ff5e5e; text-shadow: 0 0 5px #ff5e5e70;">Удалить службу</span>
+                </div>
+                <div class="menu-item" onclick="tgwsStop()">
+                    <span class="key">3</span>
+                    <span class="label" style="color: #ffb95e; text-shadow: 0 0 5px #ffb95e70;">Остановить</span>
+                </div>
+                <div class="menu-item" onclick="tgwsStart()">
+                    <span class="key">4</span>
+                    <span class="label">Запустить вручную</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Заголовок</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ---- Tabs ----
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+            });
+        });
+
+        // ---- Toast ----
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            clearTimeout(toast._hideTimeout);
+            toast._hideTimeout = setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+
+        // ---- Modal ----
+        let modalCallback = null;
+
+        function openModal(title, content, callback = null) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('modal').classList.add('active');
+            modalCallback = callback;
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            if (modalCallback && typeof modalCallback === 'function') { modalCallback(false); modalCallback = null; }
+        }
+
+        // ---- ZAPRET Functions ----
+
+        async function showInstallModal() {
+            try {
+                const resp = await fetch('/api/presets/bat');
+                const data = await resp.json();
+                if (!data.presets || data.presets.length === 0) {
+                    openModal('Установка службы', `
+                        <div class="message error">Нет доступных .bat пресетов в папке ZAPRET</div>
+                        <div class="btn-group"><button class="btn" onclick="closeModal()">Закрыть</button></div>
+                    `);
+                    return;
+                }
+                let content = `
+                    <div class="preset-count">📁 ${data.presets.length} файлов</div><div class="preset-list">`;
+                data.presets.forEach((p, i) => {
+                    const name = p.replace('.bat', '');
+                    content += `<div class="list-item" onclick="installService('${p}')">
+                        <span class="checkbox num">${i+1}</span><span class="name">${name}</span><span class="ext"></span>
+                    </div>`;
+                });
+                content += `</div><div class="btn-group"><button class="btn" onclick="closeModal()">Отмена</button></div>`;
+                openModal('Установка службы', content);
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        async function installService(preset) {
+            closeModal();
+            showToast('Установка...', 'info');
+            try {
+                const resp = await fetch('/api/service/install', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ preset })
+                });
+                const data = await resp.json();
+                if (data.success) { showToast(data.message, 'success'); setTimeout(() => location.reload(), 1500); }
+                else { showToast(data.error, 'error'); }
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        async function removeService() {
+            if (!confirm('Удалить службы zapret и WinDivert?')) return;
+            showToast('Удаление...', 'info');
+            try {
+                const resp = await fetch('/api/service/remove', { method: 'POST' });
+                const data = await resp.json();
+                if (data.success) { showToast(data.message, 'success'); setTimeout(() => location.reload(), 1500); }
+                else { showToast('' + data.error, 'error'); }
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        async function checkStatus() {
+            try {
+                const resp = await fetch('/api/service/status');
+                const data = await resp.json();
+                const map = { 'running':'Запущен', 'stopped':'Остановлен', 'stop_pending':'Останавливается', 'not_installed':'Не установлен' };
+                let content = `
+                    <div id="modalContent">
+                        <div style="font-size:13px;">
+                            <div style="padding: 0px 4px; display: flex; height: 22px; align-items: center; gap:7px; margin-bottom: 2px; background: #000000;">
+                                <span style="background: ${data.zapret.replace('running', '#4bff8d').replace('not_installed', '#ff6060')}; width: 12px; height: 12px; display: flex; color:#4bff8d"></span>
+                                <div style="color: #6e6e6e;">Zapret:</div>${map[data.zapret] || data.zapret}
+                            </div>
+                            <div style="padding: 0px 4px; display: flex; height: 22px; align-items: center; gap:7px; margin-bottom: 2px; background: #000000;">
+                                <span style="background: ${data.windivert.replace('running', '#4bff8d').replace('not_installed', '#ff6060')}; width: 12px; height: 12px; display: flex; color:#4bff8d"></span> 
+                                <div style="color: #6e6e6e;">WinDivert:</div>${map[data.windivert] || data.windivert}
+                            </div>
+                            <div style="padding: 0px 4px; display: flex; height: 22px; align-items: center; gap:7px; margin-bottom: 2px; background: #000000;">
+                                <span style="background: ${data.winws_running ? '#4bff8d' : '#ff6060'}; width: 12px; height: 12px; display: flex; color:#ff6060"></span>
+                                <div style="color: #6e6e6e;">winws.exe:</div>${data.winws_running ? 'Запущен' : 'Не запущен'}
+                            </div>
+                            <div style="padding: 0px 4px; display: flex; height: 22px; align-items: center; gap:7px; margin-bottom: 2px; background: #000000;">
+                                <span style="background: #6e6e6e; width: 12px; height: 12px; display: flex; color:#4bff8d"></span>
+                                <div style="color: #6e6e6e;">Пресет:</div>${data.strategy}
+                    </div><div class="btn-group"><button class="btn" onclick="closeModal()">Закрыть</button></div>`;
+                openModal('Статус службы', content);
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        async function toggleGameFilter() {
+            const current = '{{ game_filter_status }}';
+            let content = `<div style="margin-bottom:12px;color:#9ca3af;">Текущий: <strong>${current}</strong></div>
+                <div class="btn-group" style="flex-direction:column;">
+                    <button class="btn primary" onclick="setGameFilter('all')">TCP+UDP</button>
+                    <button class="btn primary" onclick="setGameFilter('tcp')">Только TCP</button>
+                    <button class="btn primary" onclick="setGameFilter('udp')">Только UDP</button>
+                    <button class="btn danger" onclick="setGameFilter('off')">Отключить</button>
+                </div><div class="btn-group"><button class="btn" onclick="closeModal()">Отмена</button></div>`;
+            openModal('Игровой фильтр', content);
+        }
+
+        async function setGameFilter(mode) {
+            closeModal();
+            showToast('Изменение...', 'info');
+            try {
+                const resp = await fetch('/api/game/switch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mode })
+                });
+                const data = await resp.json();
+                if (data.success) { showToast(data.message, 'success'); setTimeout(() => location.reload(), 1000); }
+                else { showToast(data.error, 'error'); }
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        // ---- IPSet Functions (updated with modal) ----
+
+        async function toggleIPSet() {
+            // Получаем текущий статус из HTML
+            const currentStatus = '{{ ipset_status }}';
+            
+            // Создаём модальное окно с выбором режимов
+            let content = `
+                <div style="margin-bottom:12px;color:#9ca3af;">Текущий: <strong>${currentStatus}</strong></div>
+                <div style="margin-bottom:8px;font-size:12px;color:#6b7280;">Выберите режим IPSet фильтра:</div>
+                <div class="btn-group" style="flex-direction:column;">
+                    <button class="btn primary" onclick="setIPSetMode('loaded')" style="background: #0a2a1a; color: #4ade80;">
+                        <div>Loaded</div>
+                    </button>
+                    <button class="btn primary" onclick="setIPSetMode('none')" style="background: #2a2a0a; color: #facc15;">
+                        <div>None</div>
+                    </button>
+                    <button class="btn primary" onclick="setIPSetMode('any')" style="background: #0a1a2a; color: #60a5fa;">
+                        <div>Any</div>
+                    </button>
+                </div>
+                <div class="help-text" style="margin-top:8px;font-size:11px;">
+                    💡 <strong>Loaded</strong> — стандартный режим с загруженным списком IP-адресов<br>
+                    💡 <strong>None</strong> — только localhost (используется для обхода блокировок)<br>
+                    💡 <strong>Any</strong> — все IP-адреса (отключает IPSet фильтрацию)
+                </div>
+                <div class="btn-group" style="margin-top:12px;">
+                    <button class="btn" onclick="closeModal()">Отмена</button>
+                </div>
+            `;
+            openModal('Настройка IPSet фильтра', content);
+        }
+
+        async function setIPSetMode(mode) {
+            closeModal();
+            showToast('Переключение IPSet...', 'info');
+            try {
+                // Отправляем запрос на сервер с указанием режима
+                const resp = await fetch('/api/ipset/switch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mode: mode })
+                });
+                const data = await resp.json();
+                if (data.success) {
+                    showToast(data.message, 'success');
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    showToast(data.error, 'error');
+                }
+            } catch(e) {
+                showToast('Ошибка: ' + e.message, 'error');
+            }
+        }
+
+        async function updateIPSet() {
+            showToast('Обновление IPSet...', 'info');
+            try {
+                const resp = await fetch('/api/ipset/update', { method: 'POST' });
+                const data = await resp.json();
+                if (data.success) { showToast(data.message, 'success'); }
+                else { showToast(data.error, 'error'); }
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        async function updateHosts() {
+            if (!confirm('Обновить hosts? Требуются права администратора.')) return;
+            showToast('Обновление hosts...', 'info');
+            try {
+                const resp = await fetch('/api/hosts/update', { method: 'POST' });
+                const data = await resp.json();
+                if (data.success) { showToast(data.message, 'success'); }
+                else { showToast(data.error, 'error'); }
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        async function runDiagnostics() {
+            showToast('Диагностика...', 'info');
+            try {
+                const resp = await fetch('/api/diagnostics');
+                const data = await resp.json();
+                let content = '<div style="font-size:13px;">';
+                data.results.forEach(t => {
+                    const icon = t.passed ? '' : (t.warning ? '⚠️' : '');
+                    const color = t.passed ? '#4bff8d' : (t.warning ? '#ffd632' : '#ff6060');
+                    content += `<div style="padding: 0px 4px; display: flex; height: 22px; align-items: center; gap:7px; margin-bottom: 2px; background: #000000;">
+                        <span style="background: ${color}; width: 12px; height: 12px; display: flex; color:${color}">${icon}</span> <div style="color: #6e6e6e;">${t.test}:</div> ${t.message}
+                    </div>`;
+                });
+                const conflicts = data.results.find(t => t.conflicts);
+                if (conflicts && conflicts.conflicts && conflicts.conflicts.length > 0) {
+                    content += `<div style="margin-top:12px;padding:10px;background:#1a0a0a;border-radius:5px;border-left:3px solid #f87171;">
+                        <span style="color:#fca5a5;">⚠️ Конфликты: ${conflicts.conflicts.join(', ')}</span>
+                        <button class="btn danger" onclick="cleanConflicts(${JSON.stringify(conflicts.conflicts).replace(/"/g,"'")})" style="margin-top:8px;width:100%;">
+                            Удалить конфликтующие службы
+                        </button>
+                    </div>`;
+                }
+                content += `<div class="btn-group"><button class="btn" onclick="closeModal()">Закрыть</button></div></div>`;
+                openModal('Диагностика', content);
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        async function cleanConflicts(conflicts) {
+            if (!confirm('Удалить: ' + conflicts.join(', ') + '?')) return;
+            closeModal();
+            showToast('Очистка...', 'info');
+            try {
+                const resp = await fetch('/api/diagnostics/clean', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ conflicts })
+                });
+                const data = await resp.json();
+                if (data.success) { showToast('Конфликты очищены', 'success'); setTimeout(() => location.reload(), 1500); }
+                else { showToast((data.error || 'Ошибка'), 'error'); }
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+
+async function showPresetEditor() {
+    try {
+        const [pRes, sRes, cRes, iRes] = await Promise.all([
+            fetch('/api/presets/txt'),
+            fetch('/api/presets/selected'),
+            fetch('/api/presets/custom'),
+            fetch('/api/presets/exclude')
+        ]);
+        const presets = await pRes.json();
+        const selected = await sRes.json();
+        const custom = await cRes.json();
+        const exclude = await iRes.json();
+        
+        if (!presets.presets || presets.presets.length === 0) {
+            openModal('Редактор списков', `
+                <div class="message error">Нет .txt пресетов в ZAPRET\\lists\\presets\\</div>
+                <div class="btn-group"><button class="btn" onclick="closeModal()">Закрыть</button></div>
+            `);
+            return;
+        }
+        
+        window._presetList = presets.presets;
+        window._selectedPresets = selected.selected || [];
+        window._customContent = custom.success ? custom.content : '';
+        window._excludeContent = exclude.success ? exclude.content : '';
+        
+        const totalCount = window._presetList.length;
+        const selectedCount = window._selectedPresets.length;
+        
+        let content = `
+            <style>
+                /* Единый кастомный скроллбар для всех элементов */
+                .custom-scroll {
+                    overflow-y: auto;
+                    overflow-x: hidden;
+                }
+                .custom-scroll::-webkit-scrollbar {
+                    width: 5px;
+                }
+                .custom-scroll::-webkit-scrollbar-track {
+                    background: #000000;
+                }
+                .custom-scroll::-webkit-scrollbar-thumb {
+                    background: #464646;
+                    border-left: 1px solid #000000;
+                }
+            </style>
+            
+            <div style="display:flex; gap:3px; margin-bottom:8px;">
+                <button class="tab active" data-editor-tab="presets" style="flex:1; cursor:pointer; font-size:12px; text-align:center; text-transform:uppercase; font-family:inherit;" onclick="switchEditorTab('presets')">
+                    Пресеты
+                </button>
+                <button class="tab" data-editor-tab="custom" style="flex:1; cursor:pointer; font-size:12px; text-align:center; text-transform:uppercase; font-family:inherit;" onclick="switchEditorTab('custom')">
+                    Кастом лист
+                </button>
+                <button class="tab" data-editor-tab="exclude" style="flex:1; cursor:pointer; font-size:12px; text-align:center; text-transform:uppercase; font-family:inherit;" onclick="switchEditorTab('exclude')">
+                    Игнор лист
+                </button>
+            </div>
+            
+            <div id="editor-presets">
+                <div class="preset-count" id="presetCountDisplay">
+                    📁 ${totalCount} файлов
+                </div>
+                <div class="preset-list custom-scroll" style="max-height:280px;">`;
+        
+        window._presetList.forEach(p => {
+            const isSel = window._selectedPresets.includes(p);
+            const name = p.replace('.txt', '');
+            content += `<div class="list-item" onclick="togglePreset('${p}')" id="preset_${p}">
+                <span class="checkbox ${isSel ? 'checked' : ''}" id="cb_${p}"></span>
+                <span class="name">${name}</span>
+            </div>`;
+        });
+        
+        content += `</div></div>
+        
+        <div id="editor-custom" style="display:none; flex-direction: column">
+            <div class="preset-count">✏️ Редактирование кастомизированного листа для обхода</div>
+            <textarea id="customEditor" spellcheck="false" class="custom-scroll" style="background: #121212; border: 1px solid #000000; width:100%; height:200px; color: #a8a8a8; padding: 5px; padding-bottom: 20px; font-size: 14px; font-family: monospace !important; resize: none; outline: none;">${window._customContent}</textarea>
+        </div>
+        
+        <div id="editor-exclude" style="display:none; flex-direction: column">
+            <div class="preset-count">🚫 Редактирование игнор-листа (исключения)</div>
+            <textarea id="excludeEditor" spellcheck="false" class="custom-scroll" style="background: #121212; border: 1px solid #000000; width:100%; height:200px; color: #a8a8a8; padding: 5px; font-size: 14px; font-family: monospace !important; resize: none; outline: none;">${window._excludeContent}</textarea>
+        </div>
+        
+        <div class="btn-group" style="margin-top:8px;">
+            <button class="btn success" onclick="mergePresetsWithCustom()" style="flex:2;" id="savePresetsBtn">
+                Сохранить параметры
+            </button>
+            <button class="btn" onclick="closeModal()">Закрыть</button>
+        </div>`;
+        
+        openModal('Редактор списков', content);
+        
+    } catch(e) { 
+        showToast('Ошибка: ' + e.message, 'error'); 
+    }
+}
+
+function switchEditorTab(tab) {
+    document.querySelectorAll('[data-editor-tab]').forEach(el => {
+        el.classList.toggle('active', el.dataset.editorTab === tab);
+    });
+    document.getElementById('editor-presets').style.display = tab === 'presets' ? 'block' : 'none';
+    document.getElementById('editor-custom').style.display = tab === 'custom' ? 'flex' : 'none';
+    document.getElementById('editor-exclude').style.display = tab === 'exclude' ? 'flex' : 'none';
+}
+
+function togglePreset(preset) {
+    const idx = window._selectedPresets.indexOf(preset);
+    if (idx >= 0) {
+        window._selectedPresets.splice(idx, 1);
+    } else {
+        window._selectedPresets.push(preset);
+    }
+    
+    const cb = document.getElementById('cb_' + preset);
+    if (cb) {
+        const isChecked = window._selectedPresets.includes(preset);
+        cb.className = `checkbox ${isChecked ? 'checked' : ''}`;
+    }
+    
+    updateSelectedCount();
+}
+
+function updateSelectedCount() {
+    const selected = window._selectedPresets.length;
+    const total = window._presetList ? window._presetList.length : 0;
+    
+    const countDisplay = document.getElementById('presetCountDisplay');
+    if (countDisplay) {
+        countDisplay.innerHTML = `📁 ${total} файлов`;
+    }
+    
+    const saveBtn = document.getElementById('savePresetsBtn');
+    if (saveBtn) {
+        saveBtn.textContent = `Сохранить параметры`;
+    }
+}
+
+async function mergePresetsWithCustom() {
+    if (window._selectedPresets.length === 0) { 
+        showToast('Выберите хотя бы один пресет', 'error'); 
+        return; 
+    }
+    
+    const customEditor = document.getElementById('customEditor');
+    const customContent = customEditor ? customEditor.value : '';
+    
+    const excludeEditor = document.getElementById('excludeEditor');
+    const excludeContent = excludeEditor ? excludeEditor.value : '';
+    
+    showToast('Объединение...', 'info');
+    try {
+        // Сначала сохраняем кастомный список
+        await fetch('/api/presets/custom', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: customContent })
+        });
+        
+        // Сохраняем игнор-лист
+        await fetch('/api/presets/exclude', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: excludeContent })
+        });
+        
+        // Объединяем пресеты с кастомным списком
+        const resp = await fetch('/api/presets/merge_with_custom', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                selected: window._selectedPresets,
+                custom_content: customContent
+            })
+        });
+        const data = await resp.json();
+        if (data.success) { 
+            showToast(data.message, 'success'); 
+            closeModal(); 
+            setTimeout(() => location.reload(), 500);
+        } else { 
+            showToast(data.error, 'error'); 
+        }
+    } catch(e) { 
+        showToast('Ошибка: ' + e.message, 'error'); 
+    }
+}
+
+        function togglePreset(preset) {
+            const idx = window._selectedPresets.indexOf(preset);
+            if (idx >= 0) window._selectedPresets.splice(idx, 1);
+            else window._selectedPresets.push(preset);
+            const cb = document.getElementById('cb_' + preset);
+            if (cb) {
+                const isChecked = window._selectedPresets.includes(preset);
+                cb.textContent = isChecked ? '' : '';
+                cb.className = `checkbox ${isChecked ? 'checked' : ''}`;
+            }
+        }
+
+        async function mergePresets() {
+            if (window._selectedPresets.length === 0) { showToast('Выберите хотя бы один список', 'error'); return; }
+            showToast('Объединение...', 'info');
+            try {
+                const resp = await fetch('/api/presets/merge', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ selected: window._selectedPresets })
+                });
+                const data = await resp.json();
+                if (data.success) { showToast(data.message, 'success'); closeModal(); }
+                else { showToast(data.error, 'error'); }
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        // ---- ADGHOME Functions ----
+
+        async function adgInstall() {
+            showToast('Установка AdGuardHome...', 'info');
+            try {
+                const resp = await fetch('/api/adg/install', { method: 'POST' });
+                const data = await resp.json();
+                if (data.success) { showToast(data.message, 'success'); setTimeout(() => location.reload(), 1500); }
+                else { showToast(data.error, 'error'); }
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        async function adgUninstall() {
+            if (!confirm('Удалить AdGuardHome?')) return;
+            let content = `
+                <div style="margin-bottom:12px;color:#9ca3af;">Восстановить DNS (DHCP)?</div>
+                <div class="btn-group">
+                    <button class="btn primary" onclick="adgUninstallConfirm(true)">Да, восстановить</button>
+                    <button class="btn" onclick="adgUninstallConfirm(false)">Нет, оставить</button>
+                </div><div class="btn-group"><button class="btn" onclick="closeModal()">Отмена</button></div>
+            `;
+            openModal('Удаление AdGuardHome', content);
+        }
+
+        async function adgUninstallConfirm(removeDns) {
+            closeModal();
+            showToast('Удаление...', 'info');
+            try {
+                const resp = await fetch('/api/adg/uninstall', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ remove_dns: removeDns })
+                });
+                const data = await resp.json();
+                if (data.success) { showToast(data.message, 'success'); setTimeout(() => location.reload(), 1500); }
+                else { showToast(data.error, 'error'); }
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        async function adgChangePort() {
+            const currentPort = '{{ adg.port }}';
+            let content = `
+                <div class="preset-count">Текущий порт: <strong>${currentPort}</strong></div>
+                <div class="adg-port-input">
+                    <input type="text" id="newPort" value="${currentPort}" placeholder="8080" style="flex:1;">
+                </div>
+                <div class="btn-group">
+                    <button class="btn primary" onclick="adgChangePortConfirm()">Изменить</button>
+                    <button class="btn" onclick="closeModal()">Отмена</button>
+                </div>
+            `;
+            openModal('Изменить порт', content);
+        }
+
+        async function adgChangePortConfirm() {
+            const port = document.getElementById('newPort').value.trim();
+            if (!port || !port.match(/^\d+$/)) { showToast('Укажите корректный номер порта', 'error'); return; }
+            closeModal();
+            showToast('Изменение порта...', 'info');
+            try {
+                const resp = await fetch('/api/adg/port', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ port })
+                });
+                const data = await resp.json();
+                if (data.success) { showToast(data.message, 'success'); setTimeout(() => location.reload(), 1500); }
+                else { showToast(data.error, 'error'); }
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        async function adgDnsMenu() {
+            let content = `
+                <div class="preset-count">Выберите DNS провайдера:</div>
+                <div class="btn-group" style="flex-direction:column;">
+                    <button class="btn primary" onclick="adgSetDns('cloudflare')">CloudFlare DNS</button>
+                    <button class="btn primary" onclick="adgSetDns('google')">Google DNS</button>
+                    <button class="btn primary" onclick="adgSetDns('yandex')">Yandex DNS</button>
+                    <button class="btn primary" onclick="adgSetDns('adguard')">AdGuard DNS</button>
+                    <button class="btn danger" onclick="adgRemoveDns()">Восстановить DHCP</button>
+                </div>
+                <div class="btn-group"><button class="btn" onclick="closeModal()">Закрыть</button></div>
+            `;
+            openModal('Настройка DNS', content);
+        }
+
+        async function adgSetDns(dnsType) {
+            closeModal();
+            showToast('Установка DNS...', 'info');
+            try {
+                const resp = await fetch('/api/adg/dns', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ dns_type: dnsType })
+                });
+                const data = await resp.json();
+                if (data.success) { showToast(data.message, 'success'); }
+                else { showToast(data.error, 'error'); }
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        async function adgRemoveDns() {
+            closeModal();
+            showToast('Восстановление DHCP...', 'info');
+            try {
+                const resp = await fetch('/api/adg/dns/remove', { method: 'POST' });
+                const data = await resp.json();
+                if (data.success) { showToast(data.message, 'success'); }
+                else { showToast(data.error, 'error'); }
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        // ---- TGWSPROXY Functions ----
+
+        async function tgwsInstall() {
+            showToast('Установка TgWsProxy...', 'info');
+            try {
+                const resp = await fetch('/api/tgws/install', { method: 'POST' });
+                const data = await resp.json();
+                if (data.success) { showToast(data.message, 'success'); setTimeout(() => location.reload(), 1500); }
+                else { showToast(data.error, 'error'); }
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        async function tgwsUninstall() {
+            if (!confirm('Удалить TgWsProxy?')) return;
+            showToast('Удаление...', 'info');
+            try {
+                const resp = await fetch('/api/tgws/uninstall', { method: 'POST' });
+                const data = await resp.json();
+                if (data.success) { showToast(data.message, 'success'); setTimeout(() => location.reload(), 1500); }
+                else { showToast(data.error, 'error'); }
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        async function tgwsStart() {
+            showToast('Запуск TgWsProxy...', 'info');
+            try {
+                const resp = await fetch('/api/tgws/install', { method: 'POST' });
+                const data = await resp.json();
+                if (data.success) { showToast(data.message, 'success'); setTimeout(() => location.reload(), 1500); }
+                else { showToast(data.error, 'error'); }
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        async function tgwsStop() {
+            showToast('Остановка TgWsProxy...', 'info');
+            try {
+                // Просто завершаем процесс без удаления автозапуска
+                const resp = await fetch('/api/tgws/status');
+                const data = await resp.json();
+                if (data.running) {
+                    await fetch('/api/tgws/uninstall', { method: 'POST' });
+                    showToast('TgWsProxy остановлен', 'success');
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    showToast('TgWsProxy уже остановлен', 'info');
+                }
+            } catch(e) { showToast('Ошибка: ' + e.message, 'error'); }
+        }
+
+        // ---- Keyboard shortcuts ----
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') { closeModal(); }
+            if (!document.getElementById('modal').classList.contains('active')) {
+                const activeTab = document.querySelector('.tab.active');
+                if (activeTab) {
+                    const tabId = activeTab.dataset.tab;
+                    const items = document.querySelectorAll('#tab-' + tabId + ' .menu-item');
+                    const num = parseInt(e.key);
+                    if (num >= 1 && num <= 9 && items[num - 1]) { items[num - 1].click(); }
+                    if (e.key === '0' && items[9]) { items[9].click(); }
+                }
+            }
+        });
+
+        // ---- Auto refresh status (only for Zapret tab) ----
+        setInterval(async () => {
+            try {
+                const resp = await fetch('/api/service/status');
+                const data = await resp.json();
+                const statusEl = document.querySelector('#tab-zapret .status-value:first-of-type');
+                if (statusEl) {
+                    if (data.winws_running) { statusEl.textContent = 'Запущен'; }
+                    else {
+                        const map = { 'running':'Запущен', 'stopped':'💤 Остановлен', 'stop_pending':'⏳ Останавливается', 'not_installed':'Не установлен' };
+                        statusEl.textContent = map[data.zapret] || data.zapret;
+                    }
+                }
+            } catch(e) { /* ignore */ }
+        }, 10000);
+    </script>
+</body>
+</html>

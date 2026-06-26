@@ -1,0 +1,3 @@
+nixware.cc
+forum.nixware.cc
+fpnpmcdn.net
